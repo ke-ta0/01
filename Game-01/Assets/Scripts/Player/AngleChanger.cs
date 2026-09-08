@@ -13,6 +13,7 @@ public class AngleChanger : MonoBehaviour
         Change();
         GunPoint.localEulerAngles = new Vector3(0, 0, angle);
 
+
         DrawLine(); // Šp“x‚Ìü‚ğ•`‚­
 
         if (Input.GetKeyDown(KeyCode.V))
