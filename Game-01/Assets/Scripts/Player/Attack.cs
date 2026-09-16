@@ -28,7 +28,7 @@ public class PlayerAttack : MonoBehaviour
             var health = enemy.GetComponent<Enemy>();
             if (health != null)
             {
-                health.TakeDamage(Damage);
+                health.TakeDamage(Damage, 1.5f);
             }
         }
     }

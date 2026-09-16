@@ -64,17 +64,25 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, float attackDir)
     {
         currentHP -= damage;
+        KnockBack(1.5f, attackDir);
         Debug.Log("ダメージ受け申した");
         if (currentHP <= 0)
         {
             Destroy(gameObject);
-            Debug.Log("やられたあ");
+            Debug.Log("やられた");
         }
     }
-        void Walk()
+    void KnockBack(float knockPower, float attackDir)
+    {
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        rb.AddForce(new Vector2(attackDir * knockPower, 0), ForceMode2D.Impulse);
+    }
+
+
+    void Walk()
         {
             //transform.Translate(Vector2.left * Speed * Time.deltaTime);
             Debug.Log("歩いてます");

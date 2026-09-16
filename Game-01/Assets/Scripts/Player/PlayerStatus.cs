@@ -16,18 +16,24 @@ public class PlayerStatus : MonoBehaviour
     private bool isGround = false;
     // Rigidbody2D
     private Rigidbody2D rb2;
+    private Animator animator;
 
     void Start()
     {
         rb2 = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     void Update()
     {
         // ˆÚ“®ˆ—
         float x = Input.GetAxis("Horizontal");
-        transform.Translate(x * MoveSpeed * Time.deltaTime, 0, 0);
-
+        rb2.linearVelocity = new Vector2(x * MoveSpeed, rb2.linearVelocity.y);
+        // transform.Translate(x * MoveSpeed * Time.deltaTime, 0, 0);
+        if (x < 0)
+            transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
+        else if (x > 0)
+            transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         // ƒWƒƒƒ“ƒvˆ—
         if (isGround)
         {
