@@ -39,6 +39,7 @@ public class PlayerStatus : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
+                animator.SetBool("isGround", true);
                 rb2.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
                 isGround = false;
                 Debug.Log("ジャンプしました");
@@ -66,6 +67,8 @@ public class PlayerStatus : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGround = true;
+            animator.SetBool("isGround" +
+                "", false);
             Debug.Log("ジャンプできます");
         }
     }
