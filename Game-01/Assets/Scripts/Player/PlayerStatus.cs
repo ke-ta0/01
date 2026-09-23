@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerStatus : MonoBehaviour
@@ -34,12 +35,14 @@ public class PlayerStatus : MonoBehaviour
             transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
         else if (x > 0)
             transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+
+        // 歩きのアニメーション
+        animator.SetBool("isWalk", x != 0);
         // ジャンプ処理
         if (isGround)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                animator.SetBool("isGround", true);
                 rb2.AddForce(Vector2.up * JumpPower, ForceMode2D.Impulse);
                 isGround = false;
                 Debug.Log("ジャンプしました");
@@ -67,8 +70,6 @@ public class PlayerStatus : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGround = true;
-            animator.SetBool("isGround" +
-                "", false);
             Debug.Log("ジャンプできます");
         }
     }

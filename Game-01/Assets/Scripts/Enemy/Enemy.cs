@@ -22,10 +22,12 @@ public class Enemy : MonoBehaviour
     private bool isAttacking = false;
     // 現在の行動
     private Act state;
-
+    // 色
+    private SpriteRenderer sr;
     void Start()
     {
         currentHP = health;
+        sr = GetComponent<SpriteRenderer>();
         // 最初の行動をWalkに設定
         state = Act.Walk;
     }
@@ -67,6 +69,7 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(int damage, float attackDir)
     {
         currentHP -= damage;
+        StartCoroutine(FlashRed());
         KnockBack(1.5f, attackDir);
         Debug.Log("ダメージ受け申した");
         if (currentHP <= 0)
@@ -74,6 +77,14 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
             Debug.Log("やられた");
         }
+    }
+    IEnumerator FlashRed()
+    {
+        Color original = sr.color;
+
+        sr.color = Color.red;          // 赤くする
+        yield return new WaitForSeconds(0.1f); // 0.1秒待つ
+        sr.color = original;           // 元に戻す
     }
     void KnockBack(float knockPower, float attackDir)
     {
@@ -88,32 +99,32 @@ public class Enemy : MonoBehaviour
             Debug.Log("歩いてます");
         }
 
-        void fight()
-        {
-            float dist = Vector2.Distance(transform.position, Target.position);
-            if (isAttacking)
-            {
-                return;
-            }
+    void fight()
+    {
+        float dist = Vector2.Distance(transform.position, Target.position);
+        if (isAttacking) return;
 
-            Vector2 dist2 = (Target.position - transform.position).normalized;
-            // 上下移動しない
-            dist2.y = 0;
-            transform.position += (Vector3)(dist2 * Speed * Time.deltaTime);
-            if (dist <= AttackRange)
-            {
-                StartCoroutine(Attack());
-            }
-        }
-        IEnumerator Attack()
+        // 左右方向だけで方向を決める（距離が近くてもゼロにならない）
+        float dir = Mathf.Sign(Target.position.x - transform.position.x);
+        Vector2 move = new Vector2(dir, 0);
+
+        transform.position += (Vector3)(move * Speed * Time.deltaTime);
+
+        if (dist <= AttackRange)
         {
-            isAttacking = true;   // 攻撃開始
+            StartCoroutine(Attack());
+        }
+    }
+
+    IEnumerator Attack()
+        {
+              // 攻撃開始
             Debug.Log("攻撃中");
 
             // 攻撃アニメーションや処理
             yield return new WaitForSeconds(1f);
-
-            isAttacking = false;  // 攻撃終了
+        isAttacking = true;
+        isAttacking = false;  // 攻撃終了
 
         }
 
