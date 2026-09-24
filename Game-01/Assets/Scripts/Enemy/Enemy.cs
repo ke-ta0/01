@@ -102,14 +102,27 @@ public class Enemy : MonoBehaviour
     void fight()
     {
         float dist = Vector2.Distance(transform.position, Target.position);
+
+        // š‹——£‚ª0.5–¢–‚È‚ç~‚Ü‚Á‚ÄUŒ‚
+        if (dist <= 0.5f)
+        {
+            if (!isAttacking)
+            {
+                StartCoroutine(Attack());
+            }
+            return; // š~‚Ü‚é
+        }
+
+        // šUŒ‚’†‚Í“®‚©‚È‚¢
         if (isAttacking) return;
 
-        // ¶‰E•ûŒü‚¾‚¯‚Å•ûŒü‚ğŒˆ‚ß‚éi‹——£‚ª‹ß‚­‚Ä‚àƒ[ƒ‚É‚È‚ç‚È‚¢j
+        // š¶‰E•ûŒü‚¾‚¯‚Å•ûŒü‚ğŒˆ‚ß‚é
         float dir = Mathf.Sign(Target.position.x - transform.position.x);
         Vector2 move = new Vector2(dir, 0);
 
         transform.position += (Vector3)(move * Speed * Time.deltaTime);
 
+        // UŒ‚‹——£‚É“ü‚Á‚½‚çUŒ‚
         if (dist <= AttackRange)
         {
             StartCoroutine(Attack());
@@ -117,18 +130,18 @@ public class Enemy : MonoBehaviour
     }
 
     IEnumerator Attack()
-        {
-              // UŒ‚ŠJn
-            Debug.Log("UŒ‚’†");
-
-            // UŒ‚ƒAƒjƒ[ƒVƒ‡ƒ“‚âˆ—
-            yield return new WaitForSeconds(1f);
+    {
         isAttacking = true;
-        isAttacking = false;  // UŒ‚I—¹
+        Debug.Log("UŒ‚’†");
 
-        }
+        // UŒ‚ƒAƒjƒ[ƒVƒ‡ƒ“‚âˆ—
+        yield return new WaitForSeconds(1f);
 
-        void escape()
+        isAttacking = false;
+    }
+
+
+    void escape()
         {
             Vector2 dist2 = (transform.position - Target.position).normalized;
             // ã‰ºˆÚ“®‚µ‚È‚¢

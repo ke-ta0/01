@@ -6,7 +6,7 @@ public class PlayerStatus : MonoBehaviour
     // HP
     [SerializeField] private float HP = 100;
     // 攻撃力
-    [SerializeField] private float Power = 10;
+   // [SerializeField] private float Power = 10;
     // 防御力
     [SerializeField] private float Defense = 5;
     // 移動速度
@@ -70,7 +70,7 @@ public class PlayerStatus : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGround = true;
-            Debug.Log("ジャンプできます");
+            Debug.Log("着地しました。ジャンプできます");
         }
     }
     // 地面から離れたとき
